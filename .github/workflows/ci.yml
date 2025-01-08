@@ -33,4 +33,4 @@ jobs:
 
       - name: Run tests
         run: |
-         poetry run pytest -sv cmonge
+         poetry run pytest -sv carot
