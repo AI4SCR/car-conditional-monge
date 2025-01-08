@@ -1,9 +1,9 @@
-import torch
-import scanpy as sc
-import pandas as pd
 from pathlib import Path
-from transformers import AutoTokenizer, EsmModel
 
+import pandas as pd
+import scanpy as sc
+import torch
+from transformers import AutoTokenizer, EsmModel
 
 adata = sc.read_h5ad("/path/to/data/20240229_from_rocio_for_manuscript.h5ad")
 all_cars = adata.obs["CAR_Variant"].unique().tolist()
@@ -21,7 +21,7 @@ domains = [
     "extracell_and_TMD_CARs",
     "NANANA_tiny_tail",
 ]
-linker_AA = "SA"
+linker_aa = "SA"
 all_domains = {}
 for d in domains:
     with open(data_dir / f"{d}.txt") as f:

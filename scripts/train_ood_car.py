@@ -1,12 +1,12 @@
+import os
 from pathlib import Path
 
-from carot.datasets.conditional_loader import ConditionalDataModule
-from carot.trainers.conditional_monge_trainer import ConditionalMongeTrainer
+import typer
 from cmonge.utils import load_config
 from loguru import logger
 
-import typer
-import os
+from carot.datasets.conditional_loader import ConditionalDataModule
+from carot.trainers.conditional_monge_trainer import ConditionalMongeTrainer
 
 
 def get_environ_var(env_var_name, fail_gracefully=True):

@@ -2,10 +2,9 @@ from pathlib import Path
 
 import jax.numpy as jnp
 import pandas as pd
-from loguru import logger
-
 from cmonge.datasets.conditional_loader import ConditionalDataModule
 from cmonge.models.embedding import BaseEmbedding
+from loguru import logger
 
 
 class CAR11DimEmbedding(BaseEmbedding):
@@ -22,7 +21,7 @@ class CAR11DimEmbedding(BaseEmbedding):
         if not checkpoint:
             labels = datamodule.train_conditions
 
-            car_11d = pd.DataFrame([self.encode_CAR_11dim(label) for label in labels]).T
+            car_11d = pd.DataFrame([self.encode_car_11dim(label) for label in labels]).T
             car_11d.colums = labels
             self.model_dir.mkdir(parents=True, exist_ok=True)
             model_dir = self.model_dir / name
@@ -36,7 +35,7 @@ class CAR11DimEmbedding(BaseEmbedding):
             values = jnp.asarray(row.values.astype("float"))
             self.embeddings[index] = values
 
-    def encode_CAR_11dim(self, CAR: str) -> list:
+    def encode_car_11dim(self, car: str) -> list:
         """
         Compute one-hot encoding of CAR variant on 15 bits.
         Use alphabetical order of CAR domains: 41BB, CD28, CD40, CTLA4, IL15RA.
@@ -52,21 +51,21 @@ class CAR11DimEmbedding(BaseEmbedding):
         0 everywhere is TCR-
         """
         all_domains = ["41BB", "CD28", "CD40", "CTLA4", "IL15RA"]
-        CAR_variant = CAR.split("-")
+        car_variant = car.split("-")
 
         encoding = [0] * 11
 
-        if CAR_variant[0] != "NA":
+        if car_variant[0] != "NA":
             # First mark first domain
-            index_1 = all_domains.index(CAR_variant[0])
+            index_1 = all_domains.index(car_variant[0])
             encoding[index_1] = 1
 
         # Mark second domain if present
-        if CAR_variant[1] != "NA":
-            index_2 = all_domains.index(CAR_variant[1])
+        if car_variant[1] != "NA":
+            index_2 = all_domains.index(car_variant[1])
             encoding[index_2 + 5] = 1
 
-        if CAR_variant[2] == "z":
+        if car_variant[2] == "z":
             encoding[-1] = 1
 
         return encoding
@@ -91,7 +90,7 @@ class CAR16DimEmbedding(BaseEmbedding):
         if not checkpoint:
             labels = datamodule.train_conditions
 
-            car_16d = pd.DataFrame([self.encode_CAR_16dim(label) for label in labels]).T
+            car_16d = pd.DataFrame([self.encode_car_16dim(label) for label in labels]).T
             car_16d.colums = labels
             self.model_dir.mkdir(parents=True, exist_ok=True)
             model_dir = self.model_dir / name
@@ -105,7 +104,7 @@ class CAR16DimEmbedding(BaseEmbedding):
             values = jnp.asarray(row.values.astype("float"))
             self.embeddings[index] = values
 
-    def encode_CAR_16dim(CAR):
+    def encode_car_16dim(self, car):
         """
         Compute one-hot encoding of CAR variant on 16 bits.
         Use alphabetical order of CAR domains: 41BB, CD28, CD40, CTLA4, IL15RA.
@@ -121,23 +120,23 @@ class CAR16DimEmbedding(BaseEmbedding):
         0 everywhere is TCR-
         """
         all_domains = ["41BB", "CD28", "CD40", "CTLA4", "IL15RA"]
-        CAR_variant = CAR.split("-")
+        car_variant = car.split("-")
 
         encoding = [0] * 16
 
-        if CAR_variant[0] != "NA":
+        if car_variant[0] != "NA":
             # First mark first domain
-            index_1 = all_domains.index(CAR_variant[0])
+            index_1 = all_domains.index(car_variant[0])
             encoding[index_1 * 3] = 1
             encoding[index_1 * 3 + 1] = 1
 
         # Mark second domain if present
-        if CAR_variant[1] != "NA":
-            index_2 = all_domains.index(CAR_variant[1])
+        if car_variant[1] != "NA":
+            index_2 = all_domains.index(car_variant[1])
             encoding[index_2 * 3] = 1
             encoding[index_2 * 3 + 2] = 1
 
-        if CAR_variant[2] == "z":
+        if car_variant[2] == "z":
             encoding[-1] = 1
 
         return encoding

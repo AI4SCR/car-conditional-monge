@@ -1,0 +1,54 @@
+data:
+  name: car
+  file_path: carot/tests/synthetic_data/synthetic.h5ad
+  drugs_path: carot/tests/synthetic_cars.txt
+  features: carot/tests/synthetic_features.txt 
+  batch_size: 32
+  split: [0.8, 0.2, 0]
+  drug_col: CAR_Variant
+  drug_condition: A
+  control_condition: control
+  ae: false
+  seed: 42
+
+condition:
+  mode: homogeneous
+  conditions: [A, B, C]
+  split: [0.8, 0.2, 0]
+
+model:
+  method: monge
+
+  fitting_loss:
+    name: sinkhorn
+    kwargs:
+      epsilon_fitting: 1
+
+  regularizer:
+    name: monge
+    kwargs:
+      epsilon_regularizer: 1.0e-2
+      cost: euclidean
+
+  optim:
+    lr: 1.0e-4
+    grad_acc_steps: 1
+    name: adamw
+    kwargs:
+      weight_decay: 1.0e-5
+  mlp:
+    dim_hidden: [64, 64, 64, 64]
+    dim_data: 80
+    dim_cond: 50
+    dim_cond_map: 50
+    layer_norm: false
+
+  embedding:
+    name: synthetic_embedding
+    model_dir: carot/synthetic_data/embed
+    checkpoint: true
+  
+  num_train_iters: 5
+  seed: 42
+
+logger_path: tests/logs.json

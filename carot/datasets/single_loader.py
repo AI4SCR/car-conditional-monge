@@ -5,11 +5,10 @@ import jax
 import jax.numpy as jnp
 import scanpy as sc
 from anndata import AnnData
-from dotmap import DotMap
-
-from cmonge.trainers.ae_trainer import AETrainerModule
 from cmonge.datasets.single_loader import AbstractDataModule
+from cmonge.trainers.ae_trainer import AETrainerModule
 from cmonge.utils import load_config
+from dotmap import DotMap
 
 
 class CarModule(AbstractDataModule):
