@@ -1,0 +1,72 @@
+dataset:
+  data_params:
+    covariate_keys: dummy_donor
+    dataset_path: /Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/OT/CD8_chemCPA_anno.h5ad
+    degs_key: all_genes
+    dose_key: dose
+    pert_category: car_dummydonor
+    perturbation_key: CAR_Variant
+    smiles_key: SMILES
+    split_key: 41BB-IL15RA-z_ID
+    use_drugs_idx: true
+  dataset_type: trapnell
+db_collection: finetuning_num_genes
+model:
+  additional_params:
+    decoder_activation: ReLU
+    doser_type: amortized
+    multi_task: false
+    patience: 50
+    seed: 1337
+  append_ae_layer: true
+  embedding:
+    directory: /Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/OT/embedding
+    model: esm2_t48_15B_UR50D_tail_dim
+  enable_cpa_mode: false
+  hparams:
+    adversary_depth: 2
+    adversary_lr: 0.0011926173789223548
+    adversary_steps: 2
+    adversary_wd: 9.846738873614555e-06
+    adversary_width: 128
+    autoencoder_depth: 4
+    autoencoder_lr: 0.0015751320499779737
+    autoencoder_wd: 6.251373574521742e-07
+    autoencoder_width: 256
+    batch_size: 32
+    dim: 32
+    dosers_depth: 3
+    dosers_lr: 0.0015751320499779737
+    dosers_wd: 6.251373574521742e-07
+    dosers_width: 64
+    dropout: 0.262378
+    embedding_encoder_depth: 4
+    embedding_encoder_width: 128
+    penalty_adversary: 0.4550475813202185
+    reg_adversary: 9.100951626404369
+    reg_adversary_cov: 26.975154833351137
+    reg_multi_task: 10.675229346653245
+    step_size_lr: 50
+  load_pretrained: false
+  pretrained_model_hashes:
+    grover_base: ff420aea264fca7668ecb147f60762a1
+    jtvae: a7060ac4e2c6154e64a13acd414cbba2
+    rdkit: 4f061dbfc7af05cf84f06a724b0c8563
+  pretrained_model_path: /Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/chemCPA/model_per_car/CD8/41BB-IL15RA-z/
+overwrite: 1007
+profiling:
+  outdir: ./
+  run_profiler: false
+seed: 497393925
+training:
+  checkpoint_freq: 25
+  ckpt_name: model
+  full_eval_during_train: false
+  max_minutes: 1400
+  num_epochs: 201
+  run_eval_disentangle: true
+  run_eval_logfold: false
+  run_eval_r2: true
+  run_eval_r2_sc: false
+  save_checkpoints: true
+  save_dir: /Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/chemCPA/model_per_car/CD8/41BB-IL15RA-z/

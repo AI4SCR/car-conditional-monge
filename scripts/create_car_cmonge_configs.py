@@ -66,13 +66,13 @@ if __name__ == "__main__":
     setting_name = f"{setting}LN_{layer_norm}_grad_acc_{grad_acc}_{lr_scheduler}"
 
     base_config_path = Path(
-        "cmonge/configs/conditional-monge-cars-{data_name}_{setting}{embedding}.yml"
+        f"cmonge/configs/conditional-monge-cars-{data_name}_{setting}{embedding}.yml"
     )
     configs_save_path = Path(
-        "cmonge/configs/cmonge/{data_name}_{embedding}_{setting_name}_",
+        f"cmonge/configs/cmonge/{data_name}_{embedding}_{setting_name}_",
     )
     exp_base_dir = Path(
-        "cmonge/cmonge/{setting_name}/{data_name}_{embedding}_FuncScore/"
+        f"cmonge/cmonge/{setting_name}/{data_name}_{embedding}_FuncScore/"
     )
 
     controls = ["NA-NA-NA"]
