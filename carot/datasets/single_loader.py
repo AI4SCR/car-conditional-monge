@@ -65,6 +65,10 @@ class CarModule(AbstractDataModule):
             features = f.readlines()
         self.features = [feature.rstrip() for feature in features]
 
+        with open(self.drugs_path) as f:
+            drugs = f.readlines()
+        self.drugs = [drug.rstrip() for drug in drugs]
+
     def preprocesser(self) -> None:
         self.adata = self.adata[:, self.features].copy()
         self.adata.X = self.adata.layers["logcounts"]
