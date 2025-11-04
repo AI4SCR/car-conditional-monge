@@ -36,7 +36,7 @@ def train_conditional_monge(config_path: Path):
         data = config.data.file_path.split("/")[-1][:-5]
         embed = config.model.embedding.name
         car = ""
-        logger_path = Path(f"cmonge/logs/cmonge/ood/{car}_{data}_{embed}.yml")
+        logger_path = Path(f"/Users/alicedriessen/Box/CAR_Tcells/Model/conditional-monge/experiments/cmonge_ood/41BB_OOD/{data}/logs.yml")
     logger.info(f"Experiment: Leaving {config.ood_condition.conditions} out")
 
     datamodule = ConditionalDataModule(config.data, config.condition, config.ae)
@@ -57,13 +57,14 @@ def train_conditional_monge(config_path: Path):
     # Evaluate baselines
     # Model doesn't need to be trained, as there is no transport happening
     trainer.evaluate(datamodule, identity=True)
-    condition = config.ood_condition.conditions
+    conditions = config.ood_condition.conditions
 
-    logger.info(f"Evaluating within condition {condition}")
-    config.data.control_condition = condition[0]
-    config.condition.conditions = condition
-    datamodule = ConditionalDataModule(config.data, config.condition, config.ae)
-    trainer.evaluate(datamodule, identity=True)
+    for condition in conditions:
+        logger.info(f"Evaluating within condition {condition}")
+        config.data.control_condition = condition
+        config.condition.conditions = [condition]
+        datamodule = ConditionalDataModule(config.data, config.condition, config.ae)
+        trainer.evaluate(datamodule, identity=True)
 
     print("Training completed")
 

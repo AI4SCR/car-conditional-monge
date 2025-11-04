@@ -1,0 +1,105 @@
+data:
+  name: car
+  file_path: /Users/alicedriessen/Box/CAR_Tcells/Model/OT/CD4.h5ad
+  drugs_path: /Users/alicedriessen/Box/CAR_Tcells/Model/OT/CAR_variants.txt
+  features: /Users/alicedriessen/Box/CAR_Tcells/Model/OT/functional_and_score_genes.txt
+  batch_size: 256
+  split: 
+    - 0.8
+    - 0.2
+    - 0
+  drug_col: CAR_Variant
+  drug_condition: IL15RA-CD28-z
+  control_condition: NA-NA-NA
+  ae: false
+  seed: 42
+
+condition:
+  mode: homogeneous
+  conditions: 
+    - CD28-CD28-z
+    - CD28-CD40-z
+    - CD28-CTLA4-z
+    - CD28-IL15RA-z 
+    - CD28-NA-z
+    - CD40-CD28-z
+    - CD40-CD40-z
+    - CD40-CTLA4-z
+    - CD40-IL15RA-z
+    - CD40-NA-z
+    - CTLA4-CD28-z
+    - CTLA4-CD40-z
+    - CTLA4-CTLA4-z
+    - CTLA4-IL15RA-z
+    - CTLA4-NA-z
+    - IL15RA-CD28-z
+    - IL15RA-CD40-z
+    - IL15RA-CTLA4-z
+    - IL15RA-IL15RA-z
+    - IL15RA-NA-z
+  split: 
+    - 0.8
+    - 0.2
+    - 0
+
+ood_condition:
+  mode: homogeneous
+  conditions: 
+    - 41BB-41BB-z
+    - 41BB-CD28-z
+    - 41BB-CD40-z
+    - 41BB-CTLA4-z
+    - 41BB-IL15RA-z
+    - 41BB-NA-z
+    - CD28-41BB-z
+    - CD40-41BB-z
+    - CTLA4-41BB-z
+    - IL15RA-41BB-z
+  split:
+    - 0.8
+    - 0.2
+    - 0
+
+logger_path: /Users/alicedriessen/Box/CAR_Tcells/Model/conditional-monge/experiments/cmonge_ood/41BB_OOD/CD4/logs.yaml
+model:
+  checkpointing_args:
+    checkpoint_dir: /Users/alicedriessen/Box/CAR_Tcells/Model/conditional-monge/experiments/cmonge_ood/41BB_OOD/CD4/model/
+  embedding:
+    checkpoint: true
+    model_dir: /Users/alicedriessen/Box/CAR_Tcells/Model/OT/embedding
+    name: esm2_t48_15B_UR50D_tail_dim
+  fitting_loss:
+    kwargs:
+      epsilon_fitting: 1
+    name: sinkhorn
+  lr_scheduler:
+    name: cosine
+  method: monge
+  mlp:
+    context_entity_bonds:
+    - - 0
+      - 5120
+    dim_cond: 5120
+    dim_cond_map:
+    - 50
+    dim_data: 82
+    dim_hidden:
+    - 64
+    - 64
+    - 64
+    - 64
+    embed_cond_equal: true
+    layer_norm: true
+  num_train_iters: 40000
+  optim:
+    grad_acc_steps: 4
+    kwargs:
+      weight_decay: 1.0e-05
+    lr: 0.0001
+    name: adamw
+  regularizer:
+    kwargs:
+      cost: euclidean
+      epsilon_regularizer: 0.01
+    name: monge
+  seed: 42

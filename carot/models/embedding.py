@@ -70,7 +70,8 @@ class CAR11DimEmbedding(BaseEmbedding):
 
         return encoding
 
-    def __call__(self, condition: str):
+    def __call__(self, condition: str, dose_split=None):
+        # dose_split for compatability with CMonge
         condition = self.embeddings[condition]
         condition_batch = jnp.asarray([condition for _ in range(self.batch_size)])
         return condition_batch, 1
@@ -141,7 +142,8 @@ class CAR16DimEmbedding(BaseEmbedding):
 
         return encoding
 
-    def __call__(self, condition: str):
+    def __call__(self, condition: str, dose_split=None):
+        # dose_split for compatability with CMonge
         condition = self.embeddings[condition]
         condition_batch = jnp.asarray([condition for _ in range(self.batch_size)])
         return condition_batch, 1
@@ -172,7 +174,8 @@ class CarEsmSmall(BaseEmbedding):
             values = jnp.asarray(row.values.astype("float"))
             self.embeddings[index] = values
 
-    def __call__(self, condition: str):
+    def __call__(self, condition: str, dose_split=None):
+        # dose_split for compatability with CMonge
         condition = self.embeddings[condition]
         condition_batch = jnp.asarray([condition for _ in range(self.batch_size)])
         return condition_batch, 1
@@ -242,7 +245,8 @@ class MetaDataEmbedding(BaseEmbedding):
             values = jnp.asarray(row.values.astype("float"))
             self.embeddings[index] = values
 
-    def __call__(self, condition: str):
+    def __call__(self, condition: str, dose_split=None):
+        # dose_split for compatability with CMonge
         condition = self.embeddings[condition]
         condition_batch = jnp.asarray([condition for _ in range(self.batch_size)])
         return condition_batch, 1
