@@ -1,12 +1,13 @@
-from cmonge.evaluate import log_mean_metrics, log_metrics
-import jax
-import jax.numpy as jnp
-from jaxtyping import PRNGKeyArray
 import pathlib
 import pickle
 from typing import Iterator
+
+import jax
+import jax.numpy as jnp
 import typer
 import yaml
+from cmonge.evaluate import log_mean_metrics, log_metrics
+from jaxtyping import PRNGKeyArray
 
 
 def format_dict(dict_):
@@ -50,7 +51,7 @@ def evaluate_condition(
 def main(config: str, split: str):
 
     # donors = ["D09", "D17"]
-    donors = ["D09"] # in case of dummy data
+    donors = ["D09"]  # in case of dummy data
     metrics = {}
     key = jax.random.key(0)
     with open(config, "r") as f:
@@ -63,9 +64,7 @@ def main(config: str, split: str):
 
     # All drug_dose combis in current OOD results
     # chemCPA condition also contains cell line, but we don't use it
-    current_cars = list(
-        set([c.split("_")[0] for c in predictions_dict.keys()])
-    )
+    current_cars = list(set([c.split("_")[0] for c in predictions_dict.keys()]))
 
     # We gather all cells from same drug-dose combi as in CMonge
     for car in current_cars:
@@ -96,9 +95,7 @@ def main(config: str, split: str):
         target_loader = sampler_iter(all_target, batch_size=512, key=k1)
         transport_loader = sampler_iter(all_transport, batch_size=512, key=k2)
 
-        evaluate_condition(
-            target_loader, transport_loader, degs_idx, metrics[car]
-        )
+        evaluate_condition(target_loader, transport_loader, degs_idx, metrics[car])
         log_mean_metrics(metrics[car])
 
         format_dict(metrics[car])

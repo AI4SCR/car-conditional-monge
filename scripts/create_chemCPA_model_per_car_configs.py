@@ -19,10 +19,10 @@ def change_and_save_configs(
     cars = [car.rstrip() for car in cars]
 
     for car in cars:
-        config = base_config.copy()        
-        config["dataset"]["data_params"]["dataset_path"]= adata_path
+        config = base_config.copy()
+        config["dataset"]["data_params"]["dataset_path"] = adata_path
         config["dataset"]["data_params"]["split_key"] = f"{car}_ID"
-    
+
         exp_path = f"{exp_base_dir}/{car}/"
         try:
             os.makedirs(exp_path)
@@ -42,15 +42,21 @@ def change_and_save_configs(
 
 
 if __name__ == "__main__":
-    data_name = "CD4" # CD4, CD8
-    base_config_path = Path(f"/Users/alicedriessen/Projects/car-conditional-monge/configs/chemCPA_{data_name}_ID_config_dummy_donor.yml")
+    data_name = "CD4"  # CD4, CD8
+    base_config_path = Path(
+        f"/Users/alicedriessen/Projects/car-conditional-monge/configs/chemCPA_{data_name}_ID_config_dummy_donor.yml"
+    )
     configs_save_path = Path(
         f"/Users/alicedriessen/Projects/car-conditional-monge/configs/chemCPA_per_car/{data_name}/",
     )
 
-    exp_base_dir = Path(f"/Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/chemCPA/model_per_car/{data_name}")
+    exp_base_dir = Path(
+        f"/Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/chemCPA/model_per_car/{data_name}"
+    )
     adata_path = f"/Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/OT/{data_name}_chemCPA_anno.h5ad"
-    car_variants = Path("/Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/OT/CAR_variants.txt")
+    car_variants = Path(
+        "/Users/alicedriessen/Box/LegacyFromOldColleagues/Alice/CAR_Tcells/Model/OT/CAR_variants.txt"
+    )
 
     for d in [configs_save_path, exp_base_dir]:
         try:

@@ -182,6 +182,7 @@ def score_transports_and_targets_combinations(all_expr, all_meta):
 
     return scores
 
+
 def monge_get_source_target_transport(
     trainer: "MongeGapTrainer",
     datamodule: "AbstractDataModule",

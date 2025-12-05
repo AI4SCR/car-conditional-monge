@@ -1,26 +1,23 @@
-from chemCPA.data import load_dataset_splits
-
-import yaml
-import pandas as pd
-from pathlib import Path
 import pickle
-import numpy as np
+from pathlib import Path
 
+import numpy as np
+import pandas as pd
 import scanpy as sc
 import torch
 import typer
-from tqdm.auto import tqdm
-
+import yaml
 from chemCPA.data import (
     canonicalize_smiles,
     drug_names_to_once_canon_smiles,
+    load_dataset_splits,
 )
 from chemCPA.embedding import get_chemical_representation
 from chemCPA.model import ComPert
 from chemCPA.paths import CHECKPOINT_DIR
 from chemCPA.train import bool2idx, compute_prediction, repeat_n
-
 from cmonge.metrics import average_r2, compute_scalar_mmd, wasserstein_distance
+from tqdm.auto import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -47,7 +44,6 @@ def load_smiles(dataset, key_dict):
     drugs_names_unique_sorted = np.array(sorted(drugs_names_unique))
     canon_smiles_unique_sorted = drugs_names_unique_sorted
 
-
     return canon_smiles_unique_sorted
 
 
@@ -69,11 +65,11 @@ def load_model(config, canon_smiles_unique_sorted, checkpoint_dir=CHECKPOINT_DIR
     if len(dumped_model) == 3:
         print("This model does not contain the covariate embeddings or adversaries.")
         state_dict, init_args, history = dumped_model
-        COV_EMB_AVAILABLE = False
+        cov_emb_available = False
     elif len(dumped_model) == 4:
         print("This model does not contain the covariate embeddings.")
         state_dict, cov_adv_state_dicts, init_args, history = dumped_model
-        COV_EMB_AVAILABLE = False
+        cov_emb_available = False
     elif len(dumped_model) == 5:
         (
             state_dict,
@@ -82,7 +78,7 @@ def load_model(config, canon_smiles_unique_sorted, checkpoint_dir=CHECKPOINT_DIR
             init_args,
             history,
         ) = dumped_model
-        COV_EMB_AVAILABLE = True
+        cov_emb_available = True
         assert len(cov_emb_state_dicts) == 1
     append_layer_width = (
         config["dataset"]["n_vars"]
@@ -99,7 +95,7 @@ def load_model(config, canon_smiles_unique_sorted, checkpoint_dir=CHECKPOINT_DIR
         device=device,
     )
     model = model.eval()
-    if COV_EMB_AVAILABLE:
+    if cov_emb_available:
         for embedding_cov, state_dict_cov in zip(
             model.covariates_embeddings, cov_emb_state_dicts
         ):
@@ -142,14 +138,14 @@ def compute_pred(
     dosages=[1e4],
     cell_lines=None,
     genes_control=None,
-    use_DEGs=True,
+    use_degs=True,
     verbose=True,
 ):
     # dataset.pert_categories contains: 'celltype_perturbation_dose' info
     pert_categories_index = pd.Index(dataset.pert_categories, dtype="category")
 
     cl_dict = {
-        torch.Tensor([1, 0 ]): "D09",
+        torch.Tensor([1, 0]): "D09",
         torch.Tensor([0, 1]): "D17",
     }
 
@@ -250,7 +246,7 @@ def compute_pred(
 
         mean_pred = mean_pred.cpu().numpy()
         y_true = y_true.cpu().numpy()
-        if use_DEGs:
+        if use_degs:
             drug_r2[cell_drug_dose_comb] = average_r2(
                 y_true[:, idx_de], mean_pred[:, idx_de]
             )
@@ -270,9 +266,7 @@ def main(config_path, split):
     cell_lines = ["D09", "D17"]
     dataset, key_dict = load_dataset(config)
     config["dataset"]["n_vars"] = dataset.n_vars
-    canon_smiles_unique_sorted = load_smiles(
-        dataset, key_dict
-    )
+    canon_smiles_unique_sorted = load_smiles(dataset, key_dict)
 
     # Load dataset
     data_params = config["dataset"]["data_params"]
@@ -294,7 +288,7 @@ def main(config_path, split):
         genes_control=datasets["test_control"].genes,
         dosages=dosages,
         cell_lines=cell_lines,
-        use_DEGs=True,
+        use_degs=True,
         verbose=True,
     )
 
