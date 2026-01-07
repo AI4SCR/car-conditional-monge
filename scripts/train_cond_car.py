@@ -28,7 +28,7 @@ def train_ood_monge(config_path: Path):
 
     config = load_config(config_path)
     # job_id = get_environ_var("LSB_JOBID", fail_gracefully=True)
-    job_id=1
+    job_id = 1
 
     if len(config.logger_path) != 0:
         logger_path = Path(config.logger_path)
