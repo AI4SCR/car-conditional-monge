@@ -1,6 +1,7 @@
 import pickle
-import yaml
+
 import typer
+import yaml
 from chemCPA.experiments_run import ExperimentWrapper
 
 
@@ -12,7 +13,6 @@ def main(config_path):
         "r",
     ) as f:
         args = yaml.safe_load(f)
-
 
     exp.seed = 1337
     # loads the dataset splits
