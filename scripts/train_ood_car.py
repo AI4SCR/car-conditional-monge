@@ -36,7 +36,9 @@ def train_conditional_monge(config_path: Path):
         data = config.data.file_path.split("/")[-1][:-5]
         embed = config.model.embedding.name
         car = ""
-        logger_path = Path(f"/Users/alicedriessen/Box/CAR_Tcells/Model/conditional-monge/experiments/cmonge_ood/41BB_OOD/{data}/logs.yml")
+        logger_path = Path(
+            f"/Users/alicedriessen/Box/CAR_Tcells/Model/conditional-monge/experiments/cmonge_ood/41BB_OOD/{data}/logs.yml"
+        )
     logger.info(f"Experiment: Leaving {config.ood_condition.conditions} out")
 
     datamodule = ConditionalDataModule(config.data, config.condition, config.ae)

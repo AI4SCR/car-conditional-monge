@@ -2,8 +2,10 @@
 
 [![CI](https://github.com/AI4SCR/car-conditional-monge/actions/workflows/ci.yml/badge.svg)](https://github.com/AI4SCR/car-conditional-monge/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/885465953.svg)](https://doi.org/10.5281/zenodo.17526342)
 
-The conditional Monge Gap applied the single cell RNA sequencing data of Chimeric Antigen Receptor T cells. Extension of the [Conditional Monge Gap](https://github.com/AI4SCR/conditional-monge), to include CAR specific dataloaders, embeddings and trainers. Additionally `notebooks` contains Notebooks for generating the figures of the preprint ... and additional analyses. In the `configs` and `scripts` directories are all scripts to replicate the experiments from this preprint.
+
+The conditional Monge Gap applied the single cell RNA sequencing data of Chimeric Antigen Receptor T cells. Extension of the [Conditional Monge Gap](https://github.com/AI4SCR/conditional-monge), to include CAR specific dataloaders, embeddings and trainers. Additionally `notebooks` contains Notebooks for generating the figures of the preprint and additional analyses. In the `configs` and `scripts` directories are all scripts to replicate the experiments from this preprint.
 
 ## Development setup & installation
 We use [poetry](https://python-poetry.org/docs/managing-environments/) as package manager and tested the code in Python 3.10.
